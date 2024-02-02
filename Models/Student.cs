@@ -8,7 +8,8 @@
         public string Email { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
 
-        public virtual List<CaseNote> CaseNotes { get; set; }
+        public virtual List<CaseNote>? CaseNotes { get; set; }
+        public string PhoneNumber { get; internal set; } = string.Empty;
 
         // Default constructor
         public Student()

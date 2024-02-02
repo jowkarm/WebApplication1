@@ -16,15 +16,22 @@ namespace WebApplication1.Models
         public int StudentId { get; set; }
 
         [JsonIgnore]
-        public virtual Student Student { get; set; }
+        public virtual Student? Student { get; set; }
 
-        public CaseNote(bool status, string subject, string note, DateTime dueDate)
+        public CaseNote()
         {
-            this.Status = status;
-            this.Subject = subject;
-            this.Note = note;
-            this.DueDate = dueDate;
-            this.OpenDate = DateTime.Now;
+            
+        }
+
+        public CaseNote(int id, int studentId, bool status, string subject, string note, DateTime dueDate)
+        {
+            Id = id;
+            StudentId = studentId;
+            Status = status;
+            Subject = subject;
+            Note = note;
+            DueDate = dueDate;
+            OpenDate = DateTime.Now;
         }
 
         
