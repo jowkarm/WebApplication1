@@ -11,47 +11,47 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentsController : ControllerBase
+    public class CheckInsController : ControllerBase
     {
         private readonly TribalDbContext _context;
 
-        public StudentsController(TribalDbContext context)
+        public CheckInsController(TribalDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Students
+        // GET: api/CheckIns
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<CheckIn>>> GetCheckIns()
         {
-            return await _context.Students.ToListAsync();
+            return await _context.CheckIns.ToListAsync();
         }
 
-        // GET: api/Students/5
+        // GET: api/CheckIns/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(int id)
+        public async Task<ActionResult<CheckIn>> GetCheckIn(int id)
         {
-            var student = await _context.Students.FindAsync(id);
+            var checkIn = await _context.CheckIns.FindAsync(id);
 
-            if (student == null)
+            if (checkIn == null)
             {
                 return NotFound();
             }
 
-            return student;
+            return checkIn;
         }
 
-        // PUT: api/Students/5
+        // PUT: api/CheckIns/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, Student student)
+        public async Task<IActionResult> PutCheckIn(int id, CheckIn checkIn)
         {
-            if (id != student.Id)
+            if (id != checkIn.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(student).State = EntityState.Modified;
+            _context.Entry(checkIn).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(id))
+                if (!CheckInExists(id))
                 {
                     return NotFound();
                 }
@@ -72,19 +72,19 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
-        // POST: api/Students
+        // POST: api/CheckIns
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
+        public async Task<ActionResult<CheckIn>> PostCheckIn(CheckIn checkIn)
         {
-            _context.Students.Add(student);
+            _context.CheckIns.Add(checkIn);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (StudentExists(student.Id))
+                if (CheckInExists(checkIn.Id))
                 {
                     return Conflict();
                 }
@@ -94,28 +94,28 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+            return CreatedAtAction("GetCheckIn", new { id = checkIn.Id }, checkIn);
         }
 
-        // DELETE: api/Students/5
+        // DELETE: api/CheckIns/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(int id)
+        public async Task<IActionResult> DeleteCheckIn(int id)
         {
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
+            var checkIn = await _context.CheckIns.FindAsync(id);
+            if (checkIn == null)
             {
                 return NotFound();
             }
 
-            _context.Students.Remove(student);
+            _context.CheckIns.Remove(checkIn);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool StudentExists(int id)
+        private bool CheckInExists(int id)
         {
-            return _context.Students.Any(e => e.Id == id);
+            return _context.CheckIns.Any(e => e.Id == id);
         }
     }
 }

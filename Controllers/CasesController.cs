@@ -11,47 +11,47 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentsController : ControllerBase
+    public class CasesController : ControllerBase
     {
         private readonly TribalDbContext _context;
 
-        public StudentsController(TribalDbContext context)
+        public CasesController(TribalDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Students
+        // GET: api/Cases
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<Case>>> GetCases()
         {
-            return await _context.Students.ToListAsync();
+            return await _context.Cases.ToListAsync();
         }
 
-        // GET: api/Students/5
+        // GET: api/Cases/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(int id)
+        public async Task<ActionResult<Case>> GetCase(int id)
         {
-            var student = await _context.Students.FindAsync(id);
+            var @case = await _context.Cases.FindAsync(id);
 
-            if (student == null)
+            if (@case == null)
             {
                 return NotFound();
             }
 
-            return student;
+            return @case;
         }
 
-        // PUT: api/Students/5
+        // PUT: api/Cases/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, Student student)
+        public async Task<IActionResult> PutCase(int id, Case @case)
         {
-            if (id != student.Id)
+            if (id != @case.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(student).State = EntityState.Modified;
+            _context.Entry(@case).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(id))
+                if (!CaseExists(id))
                 {
                     return NotFound();
                 }
@@ -72,19 +72,19 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
-        // POST: api/Students
+        // POST: api/Cases
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
+        public async Task<ActionResult<Case>> PostCase(Case @case)
         {
-            _context.Students.Add(student);
+            _context.Cases.Add(@case);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (StudentExists(student.Id))
+                if (CaseExists(@case.Id))
                 {
                     return Conflict();
                 }
@@ -94,28 +94,28 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+            return CreatedAtAction("GetCase", new { id = @case.Id }, @case);
         }
 
-        // DELETE: api/Students/5
+        // DELETE: api/Cases/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(int id)
+        public async Task<IActionResult> DeleteCase(int id)
         {
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
+            var @case = await _context.Cases.FindAsync(id);
+            if (@case == null)
             {
                 return NotFound();
             }
 
-            _context.Students.Remove(student);
+            _context.Cases.Remove(@case);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool StudentExists(int id)
+        private bool CaseExists(int id)
         {
-            return _context.Students.Any(e => e.Id == id);
+            return _context.Cases.Any(e => e.Id == id);
         }
     }
 }

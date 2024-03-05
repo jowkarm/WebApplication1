@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,8 +13,9 @@ builder.Services.AddSwaggerGen();
 
 
 // Added for DB
-builder.Services.AddDbContext<StudentContext>(options => 
-    options.UseInMemoryDatabase("Tribal"));
+var connString = builder.Configuration.GetConnectionString("TribalDB");
+builder.Services.AddDbContext<TribalDbContext>(options =>
+    options.UseSqlServer(connString));
 
 var app = builder.Build();
 

@@ -1,30 +1,23 @@
-﻿namespace WebApplication1.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace WebApplication1.Models;
+
+public partial class Student
 {
-    public class Student
-    {
-        public int Id { get; set; }
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Phone { get; set; } = string.Empty;
+    public int Id { get; set; }
 
-        public virtual List<CaseNote>? CaseNotes { get; set; }
-        public string PhoneNumber { get; internal set; } = string.Empty;
+    public string FirstName { get; set; } = null!;
 
-        // Default constructor
-        public Student()
-        {
-        }
+    public string? MiddleName { get; set; }
 
-        // Parameterized constructor
-        public Student(int id, string firstName, string lastName, string email, string phone)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            Phone = phone;
-        }
-    }
+    public string LastName { get; set; } = null!;
 
+    public string Email { get; set; } = null!;
+
+    public string PhoneNumber { get; set; } = null!;
+
+    public int CtcLinkId { get; set; }
+
+    public virtual Profile? Profile { get; set; }
 }
