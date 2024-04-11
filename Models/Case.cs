@@ -5,7 +5,7 @@ namespace WebApplication1.Models;
 
 public partial class Case
 {
-    public int Id { get; set; }
+    public int CaseId { get; set; }
 
     public bool Closed { get; set; }
 

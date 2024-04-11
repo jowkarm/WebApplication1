@@ -23,16 +23,18 @@ public partial class TribalDbContext : DbContext
 
     public virtual DbSet<Student> Students { get; set; }
 
-   
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=SQL9001.site4now.net;Initial Catalog=db_aa604d_tribaldb;Persist Security Info=True;User ID=db_aa604d_tribaldb_admin;Password=Ss5153@4648$;Encrypt=True;Trust Server Certificate=True");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Case>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Case__3214EC07C83024E8");
+            entity.HasKey(e => e.CaseId).HasName("PK__Case__6CAE524CCBAFAB21");
 
             entity.ToTable("Case");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.DateClosed).HasColumnType("datetime");
             entity.Property(e => e.DateOpened).HasColumnType("datetime");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
@@ -47,11 +49,10 @@ public partial class TribalDbContext : DbContext
 
         modelBuilder.Entity<CheckIn>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CheckIn__3214EC07D97205A7");
+            entity.HasKey(e => e.CheckInId).HasName("PK__CheckIn__E649768477F8E9C7");
 
             entity.ToTable("CheckIn");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.FollowUpDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.Profile).WithMany(p => p.CheckIns)
@@ -62,29 +63,30 @@ public partial class TribalDbContext : DbContext
 
         modelBuilder.Entity<Profile>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Profile__3214EC07B4A9F523");
+            entity.HasKey(e => e.ProfileId).HasName("PK__Profile__290C88E4D969E355");
 
             entity.ToTable("Profile");
 
-            entity.HasIndex(e => e.StudentId, "UQ_StudentId").IsUnique();
+            entity.HasIndex(e => e.CtcLinkId, "UQ_CtId").IsUnique();
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.ClothingSize).HasMaxLength(5);
             entity.Property(e => e.TribeName).HasMaxLength(50);
 
-            entity.HasOne(d => d.Student).WithOne(p => p.Profile)
-                .HasForeignKey<Profile>(d => d.StudentId)
+            entity.HasOne(d => d.CtcLink).WithOne(p => p.Profile)
+                .HasPrincipalKey<Student>(p => p.CtcLinkId)
+                .HasForeignKey<Profile>(d => d.CtcLinkId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Profile_Student");
         });
 
         modelBuilder.Entity<Student>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Student__3214EC07A58B3489");
+            entity.HasKey(e => e.StudentId).HasName("PK__Student__32C52B99F45FA0AC");
 
             entity.ToTable("Student");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.HasIndex(e => e.CtcLinkId, "UQ_CtcLinkId").IsUnique();
+
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.FirstName).HasMaxLength(50);
             entity.Property(e => e.LastName).HasMaxLength(50);

@@ -24,19 +24,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
         {
-            return await _context.Profiles.Join(
-                                _context.Students,
-                                profile => profile.StudentId,
-                                student => student.Id,
-                                (profile, student) => new Profile
-                                {
-                                    Id = profile.Id,
-                                    ClothingSize = profile.ClothingSize,
-                                    TribeName = profile.TribeName,
-                                    CtcLinkId = profile.CtcLinkId,
-                                    Student = student
-
-                                }).ToListAsync();
+            return await _context.Profiles.ToListAsync();
         }
 
         // GET: api/Profiles/5
@@ -58,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfile(int id, Profile profile)
         {
-            if (id != profile.Id)
+            if (id != profile.ProfileId)
             {
                 return BadRequest();
             }
@@ -90,23 +78,9 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<Profile>> PostProfile(Profile profile)
         {
             _context.Profiles.Add(profile);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ProfileExists(profile.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
+            return CreatedAtAction("GetProfile", new { id = profile.ProfileId }, profile);
         }
 
         // DELETE: api/Profiles/5
@@ -127,7 +101,7 @@ namespace WebApplication1.Controllers
 
         private bool ProfileExists(int id)
         {
-            return _context.Profiles.Any(e => e.Id == id);
+            return _context.Profiles.Any(e => e.ProfileId == id);
         }
     }
 }

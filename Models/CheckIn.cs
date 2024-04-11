@@ -5,7 +5,7 @@ namespace WebApplication1.Models;
 
 public partial class CheckIn
 {
-    public int Id { get; set; }
+    public int CheckInId { get; set; }
 
     public int? Physical { get; set; }
 

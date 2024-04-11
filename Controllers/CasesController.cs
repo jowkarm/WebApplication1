@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCase(int id, Case @case)
         {
-            if (id != @case.Id)
+            if (id != @case.CaseId)
             {
                 return BadRequest();
             }
@@ -78,23 +78,9 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<Case>> PostCase(Case @case)
         {
             _context.Cases.Add(@case);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (CaseExists(@case.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCase", new { id = @case.Id }, @case);
+            return CreatedAtAction("GetCase", new { id = @case.CaseId }, @case);
         }
 
         // DELETE: api/Cases/5
@@ -115,7 +101,7 @@ namespace WebApplication1.Controllers
 
         private bool CaseExists(int id)
         {
-            return _context.Cases.Any(e => e.Id == id);
+            return _context.Cases.Any(e => e.CaseId == id);
         }
     }
 }

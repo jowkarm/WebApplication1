@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCheckIn(int id, CheckIn checkIn)
         {
-            if (id != checkIn.Id)
+            if (id != checkIn.CheckInId)
             {
                 return BadRequest();
             }
@@ -78,23 +78,9 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<CheckIn>> PostCheckIn(CheckIn checkIn)
         {
             _context.CheckIns.Add(checkIn);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (CheckInExists(checkIn.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCheckIn", new { id = checkIn.Id }, checkIn);
+            return CreatedAtAction("GetCheckIn", new { id = checkIn.CheckInId }, checkIn);
         }
 
         // DELETE: api/CheckIns/5
@@ -115,7 +101,7 @@ namespace WebApplication1.Controllers
 
         private bool CheckInExists(int id)
         {
-            return _context.CheckIns.Any(e => e.Id == id);
+            return _context.CheckIns.Any(e => e.CheckInId == id);
         }
     }
 }
